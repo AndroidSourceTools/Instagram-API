@@ -1,16 +1,12 @@
 <?php
 
-$mysqli = new mysqli("localhost", "skazemf1_feri", "Farhad$%^", "skazemf1_insta");
+include('config.php');
+
 date_default_timezone_set("Asia/Tehran");
 
-$config_str = file_get_contents("./config.json");
-$config = json_decode($config_str);
-
-$client_id = $config->client_id;
-$client_secret = $config->client_secret;
-$redirect_url = $config->redirect_url;
-
 $code = $_GET['code'];
+
+$mysqli = new mysqli($db_host, "$db_username", "$db_password", "$db_name");
 
 if (!$code) {
     http_response_code(404);
@@ -21,13 +17,7 @@ if (!$code) {
     die();
 }
 
-//echo "client : " . $client_id;
-//echo "\nsecret : " . $client_secret;
-//echo "\nredi : " . $redirect_url;
-//echo "\ncode : " . $code;
-
 getAccessToken();
-
 
 function getAccessToken()
 {
