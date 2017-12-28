@@ -63,9 +63,14 @@ function getAccessToken()
     } else {
         http_response_code($httpcode);
 
+
         if ($httpcode < 300) {
             if (addToDb(json_decode($response))) {
-                echo $response;
+                launchIntent($response);
+
+//                echo "logged in successfully\n\n";
+//                echo $response;
+
             } else {
                 echo "Error in processing";
             }
@@ -98,4 +103,21 @@ function addToDb($response)
         return false;
 //        echo "Error: " . $query . "<br>" . $mysqli->error;
     }
+}
+
+function launchIntent($user_data)
+{
+    global $intent, $intent_action;
+    global $launcher_intent;
+    $url = sprintf($intent, (string)$user_data);
+//    echo $url."\n";
+//    echo $intent_action;
+
+//    header('Location: ' . $url);
+    $url2 = sprintf($launcher_intent, urlencode((string)$user_data));
+//    echo $url2;
+    echo "<a href = $url2 >Touch to launch app</a>";
+
+//    header("Location: "+$url2);
+//    die();
 }
